@@ -1,0 +1,43 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:5001
+    environment:
+      - GIN_MODE=release
+      - APP_PORT=8080
+      - DB_HOST=db
+      - DB_PORT=3366
+      - DB_USER=angelina
+      - DB_PASSWORD=2162012
+      - DB_NAME=go_crud_docker
+    depends_on:
+      - db
+    networks:
+      - my-network
+  
+  db:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - 3366:3366
+    environment:
+      - MYSQL_ROOT_PASSWORD=2162012
+      - MYSQL_DATABASE=go_crud_docker
+      - MYSQL_USER=angelina
+      - MYSQL_PASSWORD=2162012
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - my-network
+  
+volumes:
+  db_data:
+
+networks:
+  my-network:
+    driver: bridge

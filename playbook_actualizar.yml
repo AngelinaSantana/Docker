@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: "Actualizar código desde Git"
+    git:
+      repo: "https://github.com/AngelinaSantana/Docker.git"
+      dest: "/home/angelina/Docker"
+      update: yes
+
+  - name: "Detener contenedores existentes"
+    docker_compose:
+      project_name: "Docker"
+      stop: yes
+
+  - name: "Eliminar contenedores existentes"
+    docker_compose:
+      project_name: "Docker"
+      rm: yes
+
+  - name: "Levantar contenedores con la nueva imagen"
+    docker_compose:
+      project_name: "Docker"
+      up: yes
